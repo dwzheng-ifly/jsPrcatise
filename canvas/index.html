@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+</head>
+<body>
+<canvas id="canvas" width="1920" height="1080"></canvas>
+<script>
+    let canvas = document.getElementById("canvas")
+    let ctx = canvas.getContext("2d")
+    let lastX = 0
+    let lastY = 0
+    let flag = false
+    let hue = 0;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 10;
+    function draw(e) {
+        if (!flag)  return
+        ctx.beginPath();
+        hue++;
+        if (hue >= 360) {
+            hue = 0;
+        }
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        ctx.lineCap = "round"
+        ctx.moveTo(lastX, lastY)
+        ctx.lineTo(e.offsetX, e.offsetY)
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY]
+    }
+    canvas.addEventListener("mousemove", draw)
+    canvas.addEventListener("mousedown", (e) => {
+        [lastX, lastY] = [e.offsetX, e.offsetY]
+            flag = true
+
+    })
+    canvas.addEventListener('mouseup', () => flag = false);
+</script>
+
+</body>
+</html>
